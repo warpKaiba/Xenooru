@@ -40,6 +40,7 @@ $db["favourites"] = new \SleekDB\Store("favourites", platformSlashes($config["db
 $db["flagsDeletion"] = new \SleekDB\Store("flagsDeletion", platformSlashes($config["db"]["path"]), $config["db"]["config"]); // Lösch-Anfragen
 $db["wikiTerms"] = new \SleekDB\Store("wikiTerms", platformSlashes($config["db"]["path"]), $config["db"]["config"]); // Wiki-Einträge
 $db["wikiLogs"] = new \SleekDB\Store("wikiLogs", platformSlashes($config["db"]["path"]), $config["db"]["config"]); // Wiki-Bearbeitungen
+$db["levels"] = new \SleekDB\Store("levels", platformSlashes($config["db"]["path"]), $config["db"]["config"]); // User levels
 
 // Sitzungs-überprüfung
 require "session.php";

@@ -153,3 +153,35 @@ function recoverPost(postId) {
         // alert("Canceled!");
     }
 }
+
+function editUser(data) {
+    const userId = data.dataset.userId;
+    const username = data.dataset.userName;
+    const level = data.dataset.level;
+    const levelName = data.dataset.levelName;
+    const input = confirm("Are you sure you want to change "+username+"'s level to "+levelName+"?");
+
+    if (input) {
+        $.ajax({
+            type: "POST",
+            url: "ajax.php",
+            data: {
+                editUser: userId,
+                level: level
+            },
+            success: function (response) {
+                if (response == "success") {
+                    alert("Success!");
+                    location.reload();
+                } else {
+                    alert(response);
+                }
+            },
+            error: function () {
+                alert("Error!:" + response);
+            }
+        });
+    } else {
+        // alert("Canceled!");
+    }
+}

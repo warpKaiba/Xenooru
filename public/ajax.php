@@ -264,3 +264,31 @@ if (isset($_POST["updateTerm"])) {
     logTerm($termId, $exists ? $term["description"] : "", $description, $user["_id"], $user["username"]);
     die("success");
 }
+
+if (isset($_POST["editUser"])) {
+    if (!$logged) doLog("editUser", false, "not logged in.", null) && die("Not logged in!");
+    if (!$userlevel["perms"]["can_edit_user"]) doLog("editUser", false, "missing permission.", $user["_id"]) && die("Missing permission!");
+    if (!$userlevel["level"] >= $_POST["level"]) doLog("editUser", false, "not at or above level.", $user["_id"]) && die("Not high enough level!");
+    if (empty($_POST["editUser"]) || !isset($_POST["editUser"])) doLog("editUser", false, "invalid user id.") && die("Invalid user ID!");
+    if (!is_numeric($_POST["editUser"])) doLog("editUser", false, "invalid user id: " . $_POST["editUser"], $user["_id"]) && die("Invalid user ID!");
+    if (empty($_POST["level"])) doLog("editUser", false, "missing level.", $user["_id"]) && die("Missing level!");
+    if (!is_numeric($_POST["level"])) doLog("editUser", false, "invalid level: " . $_POST["level"], $user["_id"]) && die("Invalid level!");
+
+    $id = clean($_POST["editUser"]);
+    $level = clean($_POST["level"]);
+    $userid = $db["users"]->findById($id);
+    if (empty($userid)) doLog("editUser", false, "user not found.", $user["_id"]) && die("User not found!");
+    $levelid = $db["levels"]->findOneBy(["level", "==", $level]);
+    if (empty($levelid)) doLog("editUser", false, "level not found.", $user["_id"]) && die("Level not found!");
+    $banned = false;
+    if ($level == 1) $banned = true;
+
+    $data = [
+        "level" => $level,
+        "banned" => $banned
+    ];
+
+    $edit = $db["users"]->updateById($id, $data);
+    doLog("editUser", true, $edit["_id"], $user["_id"]);
+    die("success");
+}
