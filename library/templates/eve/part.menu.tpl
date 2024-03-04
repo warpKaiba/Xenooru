@@ -143,6 +143,9 @@
                     <li>
                         <a href="?tab=preports" class="mx-1 hover:text-red-200">{$lang.post_reports}</a>
                     </li>
+                    <li>
+                        <a href="?tab=logs" class="mx-1 hover:text-red-200">{$lang.logs}</a>
+                    </li>
                 {/if}
             </ul>
         </div>

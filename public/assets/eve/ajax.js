@@ -153,3 +153,30 @@ function recoverPost(postId) {
         // alert("Canceled!");
     }
 }
+
+function reportComment(commentId) {
+    const input = prompt("Why should this comment be reported?");
+
+    if (input) {
+        $.ajax({
+            type: "POST",
+            url: "ajax.php",
+            data: {
+                reportComment: commentId,
+                reason: input
+            },
+            success: function (response) {
+                if (response == "reported") {
+                    // alert("Success!");
+                } else {
+                    alert(response);
+                }
+            },
+            error: function () {
+                alert("Error!");
+            }
+        });
+    } else {
+        // alert("Canceled!");
+    }
+}
