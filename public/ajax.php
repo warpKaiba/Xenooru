@@ -292,3 +292,40 @@ if (isset($_POST["editUser"])) {
     doLog("editUser", true, $edit["_id"], $user["_id"]);
     die("success");
 }
+
+if (isset($_POST["reportComment"])) {
+    if (!$logged) doLog("reportComment", false, "not logged in.", null) && die("Not logged in!");
+    if (!$userlevel["perms"]["can_report"]) doLog("reportComment", false, "missing permission.", $user["_id"]) && die("Missing permission!");
+    if (!is_numeric($_POST["reportComment"])) doLog("reportComment", false, "invalid comment id: " . $_POST["reportComment"], $user["_id"]) && die("Invalid comment ID!");
+    if (empty($_POST["reason"])) doLog("reportComment", false, "missing reason.", $user["_id"]) && die("Missing reason!");
+    $id = clean($_POST["reportComment"]);
+    $comment = $db["comments"]->findById($id);
+    if (empty($comment)) doLog("reportComment", false, "comment not found.", $user["_id"]) && die("Comment not found!");
+    $reason = clean($_POST["reason"]);
+
+    if (empty($db["commentReports"]->findOneBy([["user", "==", $user["_id"]], "AND", ["comment", "==", $id]]))) {
+        // Get user data from users collection
+        $xuser = $db["users"]->findOneBy(["_id", "==", $comment["user_id"]]);
+        // Add user data to comment
+        $comment["user"] = $xuser;
+
+        $data = [
+            "comment" => $id,
+            "user" => $user["_id"],
+            "username" => $user["username"],
+            "reporteduser" => $comment["user"]["_id"],
+            "reportedusername" => $comment["user"]["username"],
+            "status" => 0,
+            "reason" => $reason,
+            "rejectedReason" => null,
+            "processedBy" => null,
+            "timestamp" => now()
+        ];
+        $flag = $db["commentReports"]->insert($data);
+        doLog("reportComment", true, $flag["_id"], $user["_id"]);
+        die("reported");
+    } else {
+        doLog("reportComment", false, "already reported: " . $id, $user["_id"]);
+        die("Already reported!");
+    }
+}

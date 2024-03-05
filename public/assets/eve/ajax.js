@@ -160,7 +160,6 @@ function editUser(data) {
     const level = data.dataset.level;
     const levelName = data.dataset.levelName;
     const input = confirm("Are you sure you want to change "+username+"'s level to "+levelName+"?");
-
     if (input) {
         $.ajax({
             type: "POST",
@@ -178,7 +177,34 @@ function editUser(data) {
                 }
             },
             error: function () {
-                alert("Error!:" + response);
+              alert("Error!:" + response);
+            }
+        });
+    } else {
+        // alert("Canceled!");
+    }
+}
+              
+
+function reportComment(commentId) {
+    const input = prompt("Why should this comment be reported?");
+    if (input) {
+        $.ajax({
+            type: "POST",
+            url: "ajax.php",
+            data: {
+                reportComment: commentId,
+                reason: input
+            },
+            success: function (response) {
+                if (response == "reported") {
+                    // alert("Success!");
+                } else {
+                    alert(response);
+                }
+            },
+            error: function () {
+              alert("Error!:" + response);
             }
         });
     } else {
