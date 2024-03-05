@@ -79,7 +79,7 @@
                         </li>
                     {/if}
                     <li>
-                        <a href="users.php" class="mx-1 hover:text-red-200">{$lang.everyones_favourites}</a>
+                        <a href="users.php" class="mx-1 hover:text-red-200">{$lang.user_directory}</a>
                     </li>
                     <li>
                         <a href="account.php?tab=options" class="mx-1 hover:text-red-200">{$lang.options}</a>

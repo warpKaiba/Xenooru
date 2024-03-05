@@ -23,6 +23,7 @@ $lang = array(
     "my_mail" => "My Mail",
     "my_favourites" => "My Favourites",
     "everyones_favourites" => "Everyone's Favourites",
+    "user_directory" => "User Directory",
     "options" => "Options",
     "login" => "Login",
     "signup" => "Signup",
